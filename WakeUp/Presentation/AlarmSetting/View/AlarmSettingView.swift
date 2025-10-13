@@ -27,7 +27,7 @@ struct AlarmSettingView: View {
                 }
                 .frame(height: 56)
                 .padding(.horizontal, 16)
-                                
+                
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         
@@ -64,7 +64,7 @@ struct AlarmSettingView: View {
                                 }
                             }
                         }
-                                                
+                        
                         VStack(spacing: 12) {
                             SettingOption(title: "사운드", subtitle: "Bluebird") {
                                 viewModel.goToSoundView()
@@ -76,12 +76,12 @@ struct AlarmSettingView: View {
                     }
                     .padding(20)
                 }
-                                
+                
                 MainButton(title: "설정 완료")
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
             }
-            .background(.customBackground)          
+            .background(.customBackground)
         }
     }
 }
