@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MainView: View {
+    @EnvironmentObject var viewModel: MainViewModel
     @State var isOn = false
     
     var body: some View {
@@ -21,8 +22,7 @@ struct MainView: View {
         }
         .background(.customBackground)
         .overlay(alignment: .bottomTrailing) {
-            AddButton {
-                
+            AddButton {                
             }
         }
     }
