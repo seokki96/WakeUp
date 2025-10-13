@@ -8,8 +8,18 @@
 import SwiftUI
 
 struct MainView: View {
+    @State var isOn = false
+    
     var body: some View {
-        Text("Hello, World!")
+        ScrollView {
+            LazyVStack(spacing: 14) {
+                ForEach(1..<10) { _ in
+                    AlarmView(isOn: $isOn)
+                }
+            }
+            .padding(16)
+        }
+        .background(.customBackground)
     }
 }
 
