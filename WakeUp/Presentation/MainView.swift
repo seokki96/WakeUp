@@ -20,6 +20,11 @@ struct MainView: View {
             .padding(16)
         }
         .background(.customBackground)
+        .overlay(alignment: .bottomTrailing) {
+            AddButton {
+                
+            }
+        }
     }
 }
 
