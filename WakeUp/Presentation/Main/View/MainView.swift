@@ -22,8 +22,12 @@ struct MainView: View {
         }
         .background(.customBackground)
         .overlay(alignment: .bottomTrailing) {
-            AddButton {                
+            AddButton {
+                viewModel.addAlarm()
             }
+        }
+        .fullScreenCover(isPresented: $viewModel.isShowAddAlarm) {
+            AlarmSettingView()
         }
     }
 }

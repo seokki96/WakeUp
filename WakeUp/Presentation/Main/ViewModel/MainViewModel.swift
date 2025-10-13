@@ -8,5 +8,9 @@
 import Combine
 
 class MainViewModel: ObservableObject {
+    @Published var isShowAddAlarm: Bool = false
     
+    func addAlarm() {
+        isShowAddAlarm.toggle()
+    }
 }
