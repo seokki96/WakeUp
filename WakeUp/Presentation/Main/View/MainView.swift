@@ -27,7 +27,7 @@ struct MainView: View {
             }
         }
         .fullScreenCover(isPresented: $viewModel.isShowAddAlarm) {
-            AlarmSettingView()
+            AlarmSettingView(viewModel: AlarmSettingViewModel())
         }
     }
 }

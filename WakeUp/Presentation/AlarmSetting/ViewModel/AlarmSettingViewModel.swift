@@ -6,5 +6,21 @@
 //
 
 import Combine
+import SwiftUI
 
-class AlarmSettingViewModel: ObservableObject {}
+enum AlarmSettingPath: Hashable {
+    case sound
+    case mission
+}
+
+final class AlarmSettingViewModel: ObservableObject {
+    @Published var path: [AlarmSettingPath] = []
+    
+    func goToSoundView() {
+        path.append(.sound)
+    }
+    
+    func goToMissionView() {
+        path.append(.mission)
+    }
+}
