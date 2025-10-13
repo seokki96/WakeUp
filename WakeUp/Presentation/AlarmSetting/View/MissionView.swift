@@ -9,7 +9,14 @@ import SwiftUI
 
 struct MissionView: View {
     var body: some View {
-        Text("Hello, World!")
+        ScrollView {
+            VStack {
+                MissionItem(text: "걷기 미션")
+            }
+            .padding(.horizontal, 16)
+        }
+        .background(.customBackground)
+        .navigationBarTitle(Text("미션 선택").font(.system(size: 18, weight: .bold)))
     }
 }
 
