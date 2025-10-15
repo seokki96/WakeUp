@@ -16,6 +16,8 @@ enum AlarmSettingPath: Hashable {
 final class AlarmSettingViewModel: ObservableObject {
     @Published var path: [AlarmSettingPath] = []
     @Published var selectedDay: Set<Day> = []
+    @Published var title = ""
+    @Published var time = Date()
     
     func goToSoundView() {
         path.append(.sound)

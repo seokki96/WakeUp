@@ -35,7 +35,7 @@ struct AlarmSettingView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("알람 이름")
                                 .font(.system(size: 16, weight: .bold))
-                            TextField("알람 이름을 입력해주세요", text: .constant(""))
+                            TextField("알람 이름을 입력해주세요", text: $viewModel.title)
                                 .padding(12)
                                 .background(Color.white.opacity(0.1))
                                 .cornerRadius(10)
@@ -45,7 +45,7 @@ struct AlarmSettingView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("시간 설정")
                                 .font(.system(size: 16, weight: .bold))
-                            DatePicker("", selection: .constant(.now), displayedComponents: .hourAndMinute)
+                            DatePicker("", selection: $viewModel.time, displayedComponents: .hourAndMinute)
                                 .datePickerStyle(.wheel)
                                 .labelsHidden()
                         }
