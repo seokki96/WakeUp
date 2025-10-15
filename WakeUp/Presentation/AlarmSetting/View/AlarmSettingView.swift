@@ -55,12 +55,15 @@ struct AlarmSettingView: View {
                             Text("반복")
                                 .font(.system(size: 16, weight: .bold))
                             HStack(alignment: .center, spacing: 10) {                                
-                                ForEach(["월","화","수","목","금","토","일"], id: \.self) { day in
-                                    Text(day)
+                                ForEach(Day.allCases, id: \.self) { day in
+                                    Text(day.dayName)
                                         .font(.system(size: 14, weight: .medium))
                                         .frame(width: 36, height: 36)
-                                        .background(Color.white.opacity(0.15))
+                                        .background(viewModel.selectedDay.contains(day) ? .blue : Color.white.opacity(0.15))
                                         .cornerRadius(18)
+                                        .onTapGesture {
+                                            viewModel.selecteDay(day)
+                                        }
                                 }
                             }
                             .frame(maxWidth: .infinity)

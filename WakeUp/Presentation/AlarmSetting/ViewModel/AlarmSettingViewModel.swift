@@ -15,6 +15,7 @@ enum AlarmSettingPath: Hashable {
 
 final class AlarmSettingViewModel: ObservableObject {
     @Published var path: [AlarmSettingPath] = []
+    @Published var selectedDay: Set<Day> = []
     
     func goToSoundView() {
         path.append(.sound)
@@ -22,5 +23,13 @@ final class AlarmSettingViewModel: ObservableObject {
     
     func goToMissionView() {
         path.append(.mission)
+    }
+    
+    func selecteDay(_ day: Day) {
+        if selectedDay.contains(day) {
+            selectedDay.remove(day)
+        } else {
+            selectedDay.insert(day)
+        }
     }
 }
