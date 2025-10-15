@@ -54,7 +54,7 @@ struct AlarmSettingView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("반복")
                                 .font(.system(size: 16, weight: .bold))
-                            HStack(alignment: .center, spacing: 10) {
+                            HStack(alignment: .center, spacing: 10) {                                
                                 ForEach(["월","화","수","목","금","토","일"], id: \.self) { day in
                                     Text(day)
                                         .font(.system(size: 14, weight: .medium))
@@ -63,6 +63,7 @@ struct AlarmSettingView: View {
                                         .cornerRadius(18)
                                 }
                             }
+                            .frame(maxWidth: .infinity)
                         }
                         
                         VStack(spacing: 12) {
