@@ -33,5 +33,5 @@ final class AlarmSettingViewModel: ObservableObject {
         } else {
             selectedDay.insert(day)
         }
-    }
+    }        
 }
