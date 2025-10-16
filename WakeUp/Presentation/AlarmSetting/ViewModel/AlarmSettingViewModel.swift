@@ -15,7 +15,7 @@ enum AlarmSettingPath: Hashable {
 
 final class AlarmSettingViewModel: ObservableObject {
     @Published var path: [AlarmSettingPath] = []
-    @Published var selectedDay: Set<Day> = []
+    @Published var weekDays: Set<Weekday> = []
     @Published var title = ""
     @Published var time = Date()
     
@@ -27,11 +27,37 @@ final class AlarmSettingViewModel: ObservableObject {
         path.append(.mission)
     }
     
-    func selecteDay(_ day: Day) {
-        if selectedDay.contains(day) {
-            selectedDay.remove(day)
+    func selecteDay(_ day: Weekday) {
+        if weekDays.contains(day) {
+            weekDays.remove(day)
         } else {
-            selectedDay.insert(day)
+            weekDays.insert(day)
         }
-    }        
+    }
+    
+    func saveAlarm() {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = "test"
+        content.sound = UNNotificationSound(named: UNNotificationSoundName("sampleSound.caf"))
+        
+        let hour = Calendar.current.component(.hour, from: time)
+        let minute = Calendar.current.component(.minute, from: time)
+        let center = UNUserNotificationCenter.current()
+        
+        let alarmGroupId = UUID().uuidString
+        
+        weekDays.forEach { weekDay in
+            let id = "\(alarmGroupId)-\(UUID().uuidString)"
+            var date = DateComponents()
+            date.hour = hour
+            date.minute = minute
+            date.weekday = weekDay.rawValue
+            
+            let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
+            let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+            
+            center.add(request) { error in}
+        }
+    }
 }

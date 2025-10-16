@@ -54,12 +54,12 @@ struct AlarmSettingView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("반복")
                                 .font(.system(size: 16, weight: .bold))
-                            HStack(alignment: .center, spacing: 10) {                                
-                                ForEach(Day.allCases, id: \.self) { day in
+                            HStack(alignment: .center, spacing: 10) {
+                                ForEach(Weekday.allCases, id: \.self) { day in
                                     Text(day.dayName)
                                         .font(.system(size: 14, weight: .medium))
                                         .frame(width: 36, height: 36)
-                                        .background(viewModel.selectedDay.contains(day) ? .blue : Color.white.opacity(0.15))
+                                        .background(viewModel.weekDays.contains(day) ? .blue : Color.white.opacity(0.15))
                                         .cornerRadius(18)
                                         .onTapGesture {
                                             viewModel.selecteDay(day)
@@ -81,9 +81,12 @@ struct AlarmSettingView: View {
                     .padding(20)
                 }
                 
-                MainButton(title: "설정 완료")
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
+                MainButton(title: "설정 완료") {
+                    viewModel.saveAlarm()
+                    dismiss()
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
             }
             .background(.customBackground)
             .navigationDestination(for: AlarmSettingPath.self) { path in

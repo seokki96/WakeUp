@@ -5,18 +5,26 @@
 //  Created by a on 10/15/25.
 //
 
-enum Day: CaseIterable {
-    case sunday, monday, tuesday, wednesday, thursday, friday, saturday
+import Foundation
+
+enum Weekday: Int, CaseIterable {
+    case sun, mon, tue, wed, thu, fri, sat
+}
+
+extension Weekday {
     
-    var dayName: String {
-        switch self {
-        case .sunday: return "일"
-        case .monday: return "월"
-        case .tuesday: return "화"
-        case .wednesday: return "수"
-        case .thursday: return "목"
-        case .friday: return "금"
-        case .saturday: return "토"
+    static var allCases: [Weekday] {
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        return Calendar.current.weekdaySymbols.enumerated().compactMap { index, _ in
+            return Weekday(rawValue: index)
         }
     }
+    
+    var dayName: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale.autoupdatingCurrent
+        return formatter.veryShortWeekdaySymbols[self.rawValue]
+    }
 }
+
