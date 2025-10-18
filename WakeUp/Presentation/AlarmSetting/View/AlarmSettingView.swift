@@ -10,7 +10,7 @@ import SwiftUI
 struct AlarmSettingView: View {
     @StateObject var viewModel: AlarmSettingViewModel
     @Environment(\.dismiss) var dismiss
-    
+ 
     var body: some View {
         NavigationStack(path: $viewModel.path) {
             VStack(spacing: 0) {
@@ -84,6 +84,7 @@ struct AlarmSettingView: View {
                 MainButton(title: "설정 완료") {
                     viewModel.saveAlarm()
                     dismiss()
+                    CoreDataManager.shared.addAlarm()
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)

@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import CoreData
 
 @main
 struct WakeUpApp: App {
+    
     var body: some Scene {
         WindowGroup {
             MainView()

@@ -45,6 +45,7 @@ struct MainView: View {
         }
         .task {
             await viewModel.requestPermission()
+            viewModel.getAlarm()
         }
     }
 }

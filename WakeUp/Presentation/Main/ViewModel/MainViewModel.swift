@@ -31,4 +31,8 @@ class MainViewModel: ObservableObject {
             }
         }
     }
+    
+    func getAlarm() {
+        
+    }
 }
