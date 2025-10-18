@@ -8,7 +8,7 @@
 import Foundation
 
 enum Weekday: Int, CaseIterable {
-    case sun, mon, tue, wed, thu, fri, sat
+    case sun = 1, mon, tue, wed, thu, fri, sat
 }
 
 extension Weekday {
@@ -17,14 +17,14 @@ extension Weekday {
         let formatter = DateFormatter()
         formatter.locale = Locale.current
         return Calendar.current.weekdaySymbols.enumerated().compactMap { index, _ in
-            return Weekday(rawValue: index)
+            return Weekday(rawValue: index + 1) // 1부터 시작해야함
         }
     }
     
     var dayName: String {
         let formatter = DateFormatter()
         formatter.locale = Locale.autoupdatingCurrent
-        return formatter.veryShortWeekdaySymbols[self.rawValue]
+        return formatter.veryShortWeekdaySymbols[self.rawValue-1]
     }
 }
 
