@@ -19,6 +19,12 @@ final class AlarmSettingViewModel: ObservableObject {
     @Published var title = ""
     @Published var time = Date()
     
+    private let dataManager: CoreDataManager
+    
+    init(dataManager: CoreDataManager = CoreDataManager.shared) {
+        self.dataManager = dataManager
+    }
+    
     func goToSoundView() {
         path.append(.sound)
     }
@@ -59,5 +65,6 @@ final class AlarmSettingViewModel: ObservableObject {
             
             center.add(request) { error in}
         }
+        dataManager.addAlarm(title: title, time: time)
     }
 }

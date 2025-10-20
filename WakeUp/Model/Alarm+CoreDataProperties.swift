@@ -21,6 +21,7 @@ extension Alarm {
     @NSManaged public var id: UUID?
     @NSManaged public var isActive: Bool
     @NSManaged public var title: String?
+    @NSManaged public var time: Date
 
 }
 

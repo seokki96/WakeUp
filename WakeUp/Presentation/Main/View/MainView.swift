@@ -14,8 +14,8 @@ struct MainView: View {
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 14) {
-                ForEach(1..<10) { _ in
-                    AlarmView(isOn: $isOn)
+                ForEach(viewModel.alarmList, id: \.self) {
+                    AlarmView(alarm: $0, isOn: $isOn)
                 }
             }
             .padding(16)
@@ -45,7 +45,9 @@ struct MainView: View {
         }
         .task {
             await viewModel.requestPermission()
-            viewModel.getAlarm()
+        }
+        .onAppear {
+            viewModel.fetchAlarm()
         }
     }
 }

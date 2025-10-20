@@ -8,17 +8,18 @@
 import SwiftUI
 
 struct AlarmView: View {
+    let alarm: AlarmEntity
     @Binding var isOn: Bool
     var body: some View {
         VStack {
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
-                    Text("제목")
+                    Text(alarm.title)
                         .font(.system(size: 16, weight: .bold))
                     Spacer()
                     Toggle("", isOn: $isOn)
                 }
-                Text("05:30")
+                Text("\(alarm.time)")
                     .font(.system(size: 40, weight: .bold))
             }
             .padding(16)
@@ -28,6 +29,6 @@ struct AlarmView: View {
     }
 }
 
-#Preview {
-    AlarmView(isOn: .constant(true))
-}
+//#Preview {
+//    AlarmView(isOn: .constant(true))
+//}

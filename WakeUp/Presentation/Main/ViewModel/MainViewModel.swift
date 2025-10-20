@@ -11,6 +11,13 @@ import UserNotifications
 class MainViewModel: ObservableObject {
     @Published var isShowAddAlarm: Bool = false
     @Published var isShowAlert = false
+    @Published var alarmList: [AlarmEntity] = []
+    
+    private let dataManager: CoreDataManager
+    
+    init(dataManager: CoreDataManager = .shared) {
+        self.dataManager = dataManager
+    }
     
     func addAlarm() {
         isShowAddAlarm.toggle()
@@ -32,7 +39,8 @@ class MainViewModel: ObservableObject {
         }
     }
     
-    func getAlarm() {
-        
+    func fetchAlarm() {
+        let result = dataManager.fetchAlarm()
+        alarmList = result.map { AlarmEntity(title: $0.title ?? "", time: $0.time)}
     }
 }

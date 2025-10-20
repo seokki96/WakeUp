@@ -25,16 +25,31 @@ class CoreDataManager {
     
     lazy var context = persistentContainer.viewContext
     
-    func addAlarm() {
+    func addAlarm(title: String, time: Date) {
         let newAlarm = Alarm(context: context)
-        newAlarm.title = "알람"
+        newAlarm.title = title
         newAlarm.isActive = true
+        newAlarm.time = time
         
         do {
             try context.save()
             print("데이터 추가 성공")
         } catch {
             print("Core Data save error: \(error)")
+        }
+    }
+    
+    func fetchAlarm() -> [Alarm] {
+        context.performAndWait {
+            let request: NSFetchRequest<Alarm> = Alarm.fetchRequest()
+            
+            do {
+                let result = try context.fetch(request)
+                return result
+            } catch {
+                print("Fetch request error: \(error)")
+            }
+            return []
         }
     }
 }

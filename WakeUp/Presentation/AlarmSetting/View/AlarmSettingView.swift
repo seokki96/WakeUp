@@ -83,8 +83,7 @@ struct AlarmSettingView: View {
                 
                 MainButton(title: "설정 완료") {
                     viewModel.saveAlarm()
-                    dismiss()
-                    CoreDataManager.shared.addAlarm()
+                    dismiss()                    
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
