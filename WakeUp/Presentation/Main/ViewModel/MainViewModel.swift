@@ -7,11 +7,19 @@
 
 import Combine
 import UserNotifications
+import SwiftUI
+
+enum FullScreenCover: Hashable, Identifiable {
+    case alarmSetting(AlarmEntity?)
+    
+    var id: Self { self }
+}
 
 class MainViewModel: ObservableObject {
     @Published var isShowAddAlarm: Bool = false
     @Published var isShowAlert = false
     @Published var alarmList: [AlarmEntity] = []
+    @Published var fullScreenCover: FullScreenCover?
     
     private let dataManager: CoreDataManager
     
@@ -19,8 +27,8 @@ class MainViewModel: ObservableObject {
         self.dataManager = dataManager
     }
     
-    func addAlarm() {
-        isShowAddAlarm.toggle()
+    func showAlarmSettingView(alarm: AlarmEntity? = nil) {
+        fullScreenCover = .alarmSetting(alarm)
     }
     
     func requestPermission() async {
@@ -39,11 +47,11 @@ class MainViewModel: ObservableObject {
         }
     }
     
-//     데이터를 가져왔을떄 -> isActive 상태에 따라서 초기값 바인딩
+    //     데이터를 가져왔을떄 -> isActive 상태에 따라서 초기값 바인딩
     func fetchAlarm() async {
         let center = UNUserNotificationCenter.current()
         let requests = await center.pendingNotificationRequests()
-       
+        
         let result = dataManager.fetchAlarm()
         alarmList = result.map { alarm in
             return AlarmEntity(
@@ -59,13 +67,13 @@ class MainViewModel: ObservableObject {
     
     func updateAlarm(_ alarm: AlarmEntity) {
         let center = UNUserNotificationCenter.current()
-//      alarm의 하위 목록 알람 트리거
+        //      alarm의 하위 목록 알람 트리거
         if alarm.isActive {
             alarm.notiRequests.forEach { center.add($0) }
         } else {
             center.removePendingNotificationRequests(withIdentifiers: alarm.notiRequests.map{$0.identifier})
         }
-      
+        
         do {
             try dataManager.updateAlarm(alarm: alarm)
         } catch {
@@ -73,3 +81,4 @@ class MainViewModel: ObservableObject {
         }
     }
 }
+

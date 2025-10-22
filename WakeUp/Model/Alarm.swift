@@ -9,7 +9,7 @@ import Foundation
 import UserNotifications
 import SwiftUI
 
-struct AlarmEntity: Hashable {
+struct AlarmEntity: Hashable, Identifiable {
     let id: String
     let title: String
     let time: Date

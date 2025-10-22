@@ -9,13 +9,16 @@ import SwiftUI
 
 struct MainView: View {
     @EnvironmentObject var viewModel: MainViewModel
-
+    
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 14) {
                 ForEach($viewModel.alarmList, id: \.self) { alarm in
                     AlarmView(alarm: alarm) {
                         viewModel.updateAlarm($0)
+                    }
+                    .onTapGesture {
+                        viewModel.showAlarmSettingView(alarm: alarm.wrappedValue)
                     }
                 }
             }
@@ -24,15 +27,20 @@ struct MainView: View {
         .background(.customBackground)
         .overlay(alignment: .bottomTrailing) {
             AddButton {
-                viewModel.addAlarm()
+                viewModel.showAlarmSettingView()
             }
+            .offset(x: -16)
         }
-        .fullScreenCover(isPresented: $viewModel.isShowAddAlarm, onDismiss: {
+        .fullScreenCover(item: $viewModel.fullScreenCover, onDismiss: {
             Task {
                 await viewModel.fetchAlarm()
             }
-        }, content: {
-            AlarmSettingView(viewModel: AlarmSettingViewModel())
+        }, content: { destination in
+            switch destination {
+            case .alarmSetting(let alarm):
+                AlarmSettingView(viewModel: AlarmSettingViewModel(alarm: alarm))
+            }
+            
         })
         .alert(isPresented: $viewModel.isShowAlert) {
             Alert(

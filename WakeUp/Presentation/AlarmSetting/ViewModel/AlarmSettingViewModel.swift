@@ -21,8 +21,13 @@ final class AlarmSettingViewModel: ObservableObject {
     
     private let dataManager: CoreDataManager
     
-    init(dataManager: CoreDataManager = CoreDataManager.shared) {
+    init(alarm: AlarmEntity? = nil, dataManager: CoreDataManager = CoreDataManager.shared) {
         self.dataManager = dataManager
+        if let alarm {
+            title = alarm.title
+            time = alarm.time
+            weekDays = Set(alarm.repeatDay)
+        }
     }
     
     func goToSoundView() {

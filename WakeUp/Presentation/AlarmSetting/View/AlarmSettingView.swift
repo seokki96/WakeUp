@@ -126,6 +126,6 @@ struct SettingOption: View {
     }
 }
 
-#Preview {
-    AlarmSettingView(viewModel: AlarmSettingViewModel())
-}
+//#Preview {
+//    AlarmSettingView(viewModel: AlarmSettingViewModel())
+//}
