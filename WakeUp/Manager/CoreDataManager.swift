@@ -27,6 +27,7 @@ class CoreDataManager {
     
     func addAlarm(title: String, time: Date, alarmList: Set<String>) {
         let newAlarm = Alarm(context: context)
+        newAlarm.id = UUID()
         newAlarm.title = title
         newAlarm.isActive = true
         newAlarm.time = time
@@ -52,5 +53,24 @@ class CoreDataManager {
             }
             return []
         }
+    }
+    
+    func updateAlarm(alarm: AlarmEntity) throws {
+        let request: NSFetchRequest<Alarm> = Alarm.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", alarm.id as CVarArg)
+        
+        context.performAndWait {
+            do {
+                let data = try context.fetch(request)
+                
+                if let updateAlarm = data.first {
+                    
+                    updateAlarm.isActive = alarm.isActive
+                    try context.save()
+                }
+            } catch {
+                print("Update error: \(error)")
+            }
+        }      
     }
 }
