@@ -52,19 +52,19 @@ final class AlarmSettingViewModel: ObservableObject {
         let center = UNUserNotificationCenter.current()
         
         let alarmGroupId = UUID().uuidString
-        
+        var alarmList = Set<String>()
         weekDays.forEach { weekDay in
             let id = "\(alarmGroupId)-\(UUID().uuidString)"
             var date = DateComponents()
             date.hour = hour
             date.minute = minute
             date.weekday = weekDay.rawValue
-            
+            alarmList.insert(id)
             let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
             let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
             
             center.add(request) { error in}
-        }
-        dataManager.addAlarm(title: title, time: time)
+        }               
+        dataManager.addAlarm(title: title, time: time, alarmList: alarmList)
     }
 }

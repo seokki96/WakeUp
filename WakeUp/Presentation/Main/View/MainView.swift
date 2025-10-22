@@ -27,7 +27,9 @@ struct MainView: View {
             }
         }
         .fullScreenCover(isPresented: $viewModel.isShowAddAlarm, onDismiss: {
-            viewModel.fetchAlarm()
+            Task {
+                await viewModel.fetchAlarm()
+            }
         }, content: {
             AlarmSettingView(viewModel: AlarmSettingViewModel())
         })
@@ -47,8 +49,8 @@ struct MainView: View {
         }
         .task {
             await viewModel.requestPermission()
-            viewModel.fetchAlarm()
-        }        
+            await viewModel.fetchAlarm()
+        }
     }
 }
 

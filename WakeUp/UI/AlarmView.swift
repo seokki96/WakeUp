@@ -25,6 +25,11 @@ struct AlarmView: View {
                         .font(.system(size: 40, weight: .bold))
                     Spacer()
                 }
+                HStack {
+                    ForEach(alarm.dayArray, id: \.self) {
+                        Text($0)
+                    }
+                }
             }
             .padding(16)
         }

@@ -39,8 +39,17 @@ class MainViewModel: ObservableObject {
         }
     }
     
-    func fetchAlarm() {
+    func fetchAlarm() async {
+        let center = UNUserNotificationCenter.current()
+        let requests = await center.pendingNotificationRequests()
+       
         let result = dataManager.fetchAlarm()
-        alarmList = result.map { AlarmEntity(title: $0.title ?? "", time: $0.time)}
+        alarmList = result.map { alarm in
+            return AlarmEntity(
+                title: alarm.title ?? "",
+                time: alarm.time,
+                alarmList: requests.filter { alarm.alarmList.contains($0.identifier) }
+            )
+        }
     }
 }
