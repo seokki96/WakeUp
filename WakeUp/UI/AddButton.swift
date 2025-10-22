@@ -24,7 +24,6 @@ struct AddButton: View {
                 .foregroundStyle(.button)
                 .overlay(Image(.plusIcon))
         }
-
     }
 }
 

@@ -7,11 +7,14 @@
 
 import Foundation
 import UserNotifications
+import SwiftUI
 
 struct AlarmEntity: Hashable {
+    let id: UUID
     let title: String
     let time: Date
     let alarmList: [UNNotificationRequest]
+    var isActive: Bool
     
     var dateString: String {
         let formatter = DateFormatter()

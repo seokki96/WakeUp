@@ -53,6 +53,7 @@ final class AlarmSettingViewModel: ObservableObject {
         
         let alarmGroupId = UUID().uuidString
         var alarmList = Set<String>()
+        
         weekDays.forEach { weekDay in
             let id = "\(alarmGroupId)-\(UUID().uuidString)"
             var date = DateComponents()

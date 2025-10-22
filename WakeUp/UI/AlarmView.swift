@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct AlarmView: View {
-    let alarm: AlarmEntity
-    @Binding var isOn: Bool
+    @Binding var alarm: AlarmEntity
+    var onToggle: ((AlarmEntity)->())
+    
     var body: some View {
         VStack {
             VStack(alignment: .leading, spacing: 0) {
@@ -17,7 +18,15 @@ struct AlarmView: View {
                     Text(alarm.title)
                         .font(.system(size: 16, weight: .bold))
                     Spacer()
-                    Toggle("", isOn: $isOn)
+                    Toggle("", isOn: Binding(get: {
+                        alarm.isActive
+                    }, set: { isActive in
+                        withAnimation {
+                            alarm.isActive = isActive
+                            onToggle(alarm)
+                        }
+                    }))
+                    
                 }
                 HStack(alignment: .firstTextBaseline) {
                     Text("\(alarm.meridiem)")
@@ -35,6 +44,7 @@ struct AlarmView: View {
         }
         .background(.main)
         .cornerRadius(12)
+        .opacity(alarm.isActive ? 1 : 0.3)
     }
 }
 

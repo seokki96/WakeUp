@@ -39,6 +39,7 @@ class MainViewModel: ObservableObject {
         }
     }
     
+//     데이터를 가져왔을떄 -> isActive 상태에 따라서 초기값 바인딩
     func fetchAlarm() async {
         let center = UNUserNotificationCenter.current()
         let requests = await center.pendingNotificationRequests()
@@ -46,10 +47,20 @@ class MainViewModel: ObservableObject {
         let result = dataManager.fetchAlarm()
         alarmList = result.map { alarm in
             return AlarmEntity(
+                id: alarm.id,
                 title: alarm.title ?? "",
                 time: alarm.time,
-                alarmList: requests.filter { alarm.alarmList.contains($0.identifier) }
+                alarmList: requests.filter { alarm.alarmList.contains($0.identifier) },
+                isActive: alarm.isActive
             )
+        }
+    }
+    
+    func updateAlarm(_ alarm: AlarmEntity) {
+        do {
+            try dataManager.updateAlarm(alarm: alarm)
+        } catch {
+            
         }
     }
 }

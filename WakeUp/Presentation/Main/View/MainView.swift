@@ -9,13 +9,14 @@ import SwiftUI
 
 struct MainView: View {
     @EnvironmentObject var viewModel: MainViewModel
-    @State var isOn = false
-    
+
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 14) {
-                ForEach(viewModel.alarmList, id: \.self) {
-                    AlarmView(alarm: $0, isOn: $isOn)
+                ForEach($viewModel.alarmList, id: \.self) { alarm in
+                    AlarmView(alarm: alarm) {
+                        viewModel.updateAlarm($0)
+                    }
                 }
             }
             .padding(16)
@@ -60,3 +61,4 @@ struct MainView: View {
 #Preview {
     MainView()
 }
+
