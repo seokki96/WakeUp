@@ -19,8 +19,12 @@ struct AlarmView: View {
                     Spacer()
                     Toggle("", isOn: $isOn)
                 }
-                Text("\(alarm.time)")
-                    .font(.system(size: 40, weight: .bold))
+                HStack(alignment: .firstTextBaseline) {
+                    Text("\(alarm.meridiem)")
+                    Text("\(alarm.dateString)")
+                        .font(.system(size: 40, weight: .bold))
+                    Spacer()
+                }
             }
             .padding(16)
         }
