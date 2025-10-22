@@ -61,7 +61,7 @@ class MainViewModel: ObservableObject {
         let center = UNUserNotificationCenter.current()
 //      alarm의 하위 목록 알람 트리거
         if alarm.isActive {
-            
+            alarm.notiRequests.forEach { center.add($0) }
         } else {
             center.removePendingNotificationRequests(withIdentifiers: alarm.notiRequests.map{$0.identifier})
         }
