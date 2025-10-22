@@ -28,7 +28,7 @@ class CoreDataManager {
     
     func addAlarm(alarm: AlarmEntity) {
         let newAlarm = Alarm(context: context)
-        newAlarm.id = UUID().uuidString
+        newAlarm.id = alarm.id
         newAlarm.title = alarm.title
         newAlarm.isActive = true
         newAlarm.time = alarm.time
@@ -65,8 +65,12 @@ class CoreDataManager {
             do {
                 let data = try context.fetch(request)
                 
-                if let updateAlarm = data.first {                    
+                if var updateAlarm = data.first {
                     updateAlarm.isActive = alarm.isActive
+                    updateAlarm.title = alarm.title
+                    updateAlarm.time = alarm.time
+                    updateAlarm.repeatDay = alarm.repeatDay.map(\.rawValue)
+                    updateAlarm.requestIDs = Array(alarm.notiRequests.map(\.identifier))
                     try context.save()
                 }
             } catch {

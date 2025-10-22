@@ -11,11 +11,11 @@ import SwiftUI
 
 struct AlarmEntity: Hashable, Identifiable {
     let id: String
-    let title: String
-    let time: Date
-    let notiRequests: [UNNotificationRequest]
+    var title: String
+    var time: Date
+    var notiRequests: [UNNotificationRequest]
     var isActive: Bool
-    let repeatDay: [Weekday]
+    var repeatDay: [Weekday]
     
     var dateString: String {
         let formatter = DateFormatter()

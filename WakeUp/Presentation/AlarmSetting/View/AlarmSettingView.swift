@@ -82,7 +82,11 @@ struct AlarmSettingView: View {
                 }
                 
                 MainButton(title: "설정 완료") {
-                    viewModel.saveAlarm()
+                    if viewModel.alarm == nil {
+                        viewModel.saveAlarm()
+                    } else {
+                        viewModel.updateAlarm()
+                    }
                     dismiss()
                 }
                 .padding(.horizontal, 16)
