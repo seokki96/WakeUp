@@ -50,13 +50,22 @@ class MainViewModel: ObservableObject {
                 id: alarm.id,
                 title: alarm.title ?? "",
                 time: alarm.time,
-                alarmList: requests.filter { alarm.alarmList.contains($0.identifier) },
-                isActive: alarm.isActive
+                notiRequests: requests.filter { alarm.requestIDs.contains($0.identifier) },
+                isActive: alarm.isActive,
+                repeatDay: alarm.repeatDay.compactMap { Weekday(rawValue: $0) }
             )
         }
     }
     
     func updateAlarm(_ alarm: AlarmEntity) {
+        let center = UNUserNotificationCenter.current()
+//      alarm의 하위 목록 알람 트리거
+        if alarm.isActive {
+            
+        } else {
+            center.removePendingNotificationRequests(withIdentifiers: alarm.notiRequests.map{$0.identifier})
+        }
+      
         do {
             try dataManager.updateAlarm(alarm: alarm)
         } catch {

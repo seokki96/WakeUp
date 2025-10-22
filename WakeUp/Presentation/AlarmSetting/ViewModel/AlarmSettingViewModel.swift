@@ -52,7 +52,7 @@ final class AlarmSettingViewModel: ObservableObject {
         let center = UNUserNotificationCenter.current()
         
         let alarmGroupId = UUID().uuidString
-        var alarmList = Set<String>()
+        var requests = Set<UNNotificationRequest>()
         
         weekDays.forEach { weekDay in
             let id = "\(alarmGroupId)-\(UUID().uuidString)"
@@ -60,12 +60,23 @@ final class AlarmSettingViewModel: ObservableObject {
             date.hour = hour
             date.minute = minute
             date.weekday = weekDay.rawValue
-            alarmList.insert(id)
+            
             let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
             let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
             
+            requests.insert(request)
             center.add(request) { error in}
-        }               
-        dataManager.addAlarm(title: title, time: time, alarmList: alarmList)
+        }
+        
+        let alarmEntity = AlarmEntity(
+            id: alarmGroupId,
+            title: title,
+            time: time,
+            notiRequests: Array(requests) as! [UNNotificationRequest],
+            isActive: true,
+            repeatDay: Array(weekDays)
+        )
+        
+        dataManager.addAlarm(alarm: alarmEntity)
     }
 }

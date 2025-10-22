@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import UserNotifications
 
 class CoreDataManager {
     static let shared = CoreDataManager()
@@ -25,13 +26,14 @@ class CoreDataManager {
     
     lazy var context = persistentContainer.viewContext
     
-    func addAlarm(title: String, time: Date, alarmList: Set<String>) {
+    func addAlarm(alarm: AlarmEntity) {
         let newAlarm = Alarm(context: context)
-        newAlarm.id = UUID()
-        newAlarm.title = title
+        newAlarm.id = UUID().uuidString
+        newAlarm.title = alarm.title
         newAlarm.isActive = true
-        newAlarm.time = time
-        newAlarm.alarmList = Array(alarmList)
+        newAlarm.time = alarm.time
+        newAlarm.requestIDs = Array(alarm.notiRequests.map{$0.identifier})
+        newAlarm.repeatDay = alarm.repeatDay.map { $0.rawValue }
         
         do {
             try context.save()
@@ -46,7 +48,7 @@ class CoreDataManager {
             let request: NSFetchRequest<Alarm> = Alarm.fetchRequest()
             
             do {
-                let result = try context.fetch(request)                
+                let result = try context.fetch(request)
                 return result
             } catch {
                 print("Fetch request error: \(error)")
@@ -63,14 +65,13 @@ class CoreDataManager {
             do {
                 let data = try context.fetch(request)
                 
-                if let updateAlarm = data.first {
-                    
+                if let updateAlarm = data.first {                    
                     updateAlarm.isActive = alarm.isActive
                     try context.save()
                 }
             } catch {
                 print("Update error: \(error)")
             }
-        }      
+        }
     }
 }

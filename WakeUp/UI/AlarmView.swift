@@ -35,8 +35,8 @@ struct AlarmView: View {
                     Spacer()
                 }
                 HStack {
-                    ForEach(alarm.dayArray, id: \.self) {
-                        Text($0)
+                    ForEach(alarm.repeatDay, id: \.self) {
+                        Text($0.dayName)
                     }
                 }
             }

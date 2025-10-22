@@ -10,11 +10,12 @@ import UserNotifications
 import SwiftUI
 
 struct AlarmEntity: Hashable {
-    let id: UUID
+    let id: String
     let title: String
     let time: Date
-    let alarmList: [UNNotificationRequest]
+    let notiRequests: [UNNotificationRequest]
     var isActive: Bool
+    let repeatDay: [Weekday]
     
     var dateString: String {
         let formatter = DateFormatter()
@@ -30,14 +31,6 @@ struct AlarmEntity: Hashable {
         formatter.dateFormat = "a"
         let meridiem = formatter.string(from: time)
         return meridiem
-    }
-    
-    var dayArray: [String] {
-        alarmList
-            .compactMap { $0.trigger as? UNCalendarNotificationTrigger }
-            .compactMap { $0.dateComponents.weekday }
-            .sorted()
-            .compactMap { Weekday(rawValue: $0)?.dayName }
     }
 }
 
