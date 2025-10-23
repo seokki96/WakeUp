@@ -13,10 +13,7 @@ struct WakeUpApp: App {
     
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                MainView()
-                    .environmentObject(MainViewModel())
-            }
+            RootView()
         }
     }
 }

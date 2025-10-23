@@ -22,7 +22,6 @@ struct AlarmView: View {
                     }, set: { isActive in
                         alarm.isActive = isActive
                     }))
-                    
                 }
                 HStack(alignment: .firstTextBaseline) {
                     Text("\(alarm.meridiem)")
