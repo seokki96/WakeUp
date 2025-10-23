@@ -13,17 +13,40 @@ struct MainView: View {
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 14) {
-                ForEach($viewModel.alarmList, id: \.self) { alarm in
-                    AlarmView(alarm: alarm) {
-                        viewModel.updateAlarm($0)
-                    }
-                    .onTapGesture {
-                        viewModel.showAlarmSettingView(alarm: alarm.wrappedValue)
+                ForEach(viewModel.alarmList.indices, id: \.self) { idx in
+                    HStack {
+                        if viewModel.deleteMode {
+                            Button {
+                                viewModel.deleteAlarm(viewModel.alarmList[idx])
+                                
+                            } label: {
+                                Text("삭제")
+                                    .foregroundStyle(.red)
+                            }
+                        }
+                        
+                        // alarmList가 바뀔떄까지 업데이트 안됨
+                        AlarmView(alarm: Binding(get: {
+                            // 삭제시 인덱스 오류 방지
+                            if idx > viewModel.alarmList.count-1 {
+                               return AlarmEntity(id: "", title: "", time: .now, notiRequests: [], isActive: false, repeatDay: [])
+                            } else {
+                                return viewModel.alarmList[idx]
+                            }
+                        }, set: {
+                            viewModel.alarmList[idx] = $0
+                            viewModel.updateAlarm($0)
+                        }))
+                        .onTapGesture {
+                            viewModel.showAlarmSettingView(alarm: viewModel.alarmList[idx])
+                        }
                     }
                 }
             }
             .padding(16)
         }
+        .navigationBarItems(trailing: menuButton)
+        .navigationBarItems(leading: completeButton)
         .background(.customBackground)
         .overlay(alignment: .bottomTrailing) {
             AddButton {
@@ -60,6 +83,32 @@ struct MainView: View {
             await viewModel.requestPermission()
             await viewModel.fetchAlarm()
         }
+    }
+    
+    private var menuButton: some View {
+        Menu {
+            Button {
+                withAnimation {
+                    viewModel.deleteMode = true
+                }
+            } label: {
+                Label("알람 삭제", systemImage: "trash")
+            }
+            
+        } label: {
+            Image(systemName: "ellipsis")
+                .foregroundStyle(.white)
+        }
+    }
+    
+    private var completeButton: some View {
+        Button("완료") {
+            withAnimation {
+                viewModel.deleteMode = false
+            }
+        }
+        .opacity(viewModel.deleteMode ? 1 : 0)
+        .disabled(!viewModel.deleteMode)
     }
 }
 

@@ -78,4 +78,24 @@ class CoreDataManager {
             }
         }
     }
+    
+    func deleteAlarm(alarm: AlarmEntity) {
+        let request: NSFetchRequest<Alarm> = Alarm.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", alarm.id as CVarArg)
+        
+        context.performAndWait {
+            do {
+                let data = try context.fetch(request)
+                
+                guard let deleteAlarm = data.first else {
+                    return
+                }
+            
+                context.delete(deleteAlarm)
+                try context.save()
+            } catch {
+                print("Delete error: \(error)")
+            }
+        }
+    }
 }

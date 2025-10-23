@@ -20,6 +20,7 @@ class MainViewModel: ObservableObject {
     @Published var isShowAlert = false
     @Published var alarmList: [AlarmEntity] = []
     @Published var fullScreenCover: FullScreenCover?
+    @Published var deleteMode = false
     
     private let dataManager: CoreDataManager
     
@@ -75,9 +76,21 @@ class MainViewModel: ObservableObject {
         }
         
         do {
-            try dataManager.updateAlarm(alarm: alarm)
+            try dataManager.updateAlarm(alarm: alarm)            
         } catch {
             
+        }
+    }
+    
+    func deleteAlarm(_ alarm: AlarmEntity) {
+        let center = UNUserNotificationCenter.current()
+        
+        // 기존 하위알람 삭제
+        center.removePendingNotificationRequests(withIdentifiers: alarm.notiRequests.map(\.identifier))
+        
+        dataManager.deleteAlarm(alarm: alarm)
+        Task {
+           await self.fetchAlarm()
         }
     }
 }

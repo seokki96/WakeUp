@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct AlarmView: View {
-    @Binding var alarm: AlarmEntity
-    var onToggle: ((AlarmEntity)->())
+    @Binding var alarm: AlarmEntity    
     
     var body: some View {
         VStack {
@@ -21,10 +20,7 @@ struct AlarmView: View {
                     Toggle("", isOn: Binding(get: {
                         alarm.isActive
                     }, set: { isActive in
-                        withAnimation {
-                            alarm.isActive = isActive
-                            onToggle(alarm)
-                        }
+                        alarm.isActive = isActive
                     }))
                     
                 }
