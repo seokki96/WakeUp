@@ -56,6 +56,21 @@ struct MainView: View {
             .padding(16)
         }
         .animation(.default, value: viewModel.alarmList.count)
+        .overlay(content: {
+            if viewModel.alarmList.isEmpty {
+                VStack(spacing: 12) {
+                    Image(.alarm)
+                        .renderingMode(.template)
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                        .foregroundStyle(.gray)
+                    
+                    Text("설정된 알람이 없습니다.")
+                        .fontWeight(.bold)
+                        .foregroundStyle(.gray)
+                }
+            }
+        })       
         .onTapGesture {
             withAnimation {
                 viewModel.deleteMode = false
@@ -68,7 +83,7 @@ struct MainView: View {
             AddButton {
                 viewModel.showAlarmSettingView()
             }
-            .offset(x: -16)
+            .offset(x: -16, y: -16)
         }
         .fullScreenCover(item: $viewModel.fullScreenCover, onDismiss: {
             Task {

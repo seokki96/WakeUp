@@ -106,6 +106,9 @@ class MainViewModel: ObservableObject {
         dataManager.deleteAlarm(alarm: alarm)
         Task {
             await self.fetchAlarm()
+            if alarmList.isEmpty {
+                deleteMode = false
+            }
         }
     }
 }

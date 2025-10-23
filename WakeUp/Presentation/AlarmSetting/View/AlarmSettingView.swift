@@ -80,7 +80,8 @@ struct AlarmSettingView: View {
                     }
                     .padding(20)
                 }
-                
+            }
+            .overlay(alignment: .bottom, content: {
                 MainButton(title: "설정 완료") {
                     if viewModel.alarm == nil {
                         viewModel.saveAlarm()
@@ -89,9 +90,8 @@ struct AlarmSettingView: View {
                     }
                     dismiss()
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
-            }
+                .padding(.horizontal, 16)                
+            })
             .background(.customBackground)
             .navigationDestination(for: AlarmSettingPath.self) { path in
                 switch path {
