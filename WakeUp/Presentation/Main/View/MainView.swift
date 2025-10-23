@@ -12,13 +12,22 @@ struct MainView: View {
     
     var body: some View {
         ScrollView {
+            if viewModel.isActiveAlarm {
+                Text("⏰ \(viewModel.nextAlarm) 뒤 알람")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(16)
+                    .background(.gray.opacity(0.3))
+                    .cornerRadius(12)
+                    .padding(.horizontal, 16)
+            }
+            
             LazyVStack(spacing: 14) {
                 ForEach(viewModel.alarmList.indices, id: \.self) { idx in
                     HStack {
                         if viewModel.deleteMode {
                             Button {
                                 viewModel.deleteAlarm(viewModel.alarmList[idx])
-                                
                             } label: {
                                 Text("삭제")
                                     .foregroundStyle(.red)
@@ -29,7 +38,7 @@ struct MainView: View {
                         AlarmView(alarm: Binding(get: {
                             // 삭제시 인덱스 오류 방지
                             if idx > viewModel.alarmList.count-1 {
-                               return AlarmEntity(id: "", title: "", time: .now, notiRequests: [], isActive: false, repeatDay: [])
+                                return AlarmEntity(id: "", title: "", time: .now, notiRequests: [], isActive: false, repeatDay: [])
                             } else {
                                 return viewModel.alarmList[idx]
                             }
@@ -111,9 +120,6 @@ struct MainView: View {
         .disabled(!viewModel.deleteMode)
     }
 }
-
-
-
 
 #Preview {
     MainView()

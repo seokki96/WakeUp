@@ -24,6 +24,21 @@ class MainViewModel: ObservableObject {
     
     private let dataManager: CoreDataManager
     
+    // 다음 알람 시간표시
+    var nextAlarm: String {
+        guard let firstDate = alarmList.first(where: {$0.isActive })?.time else { return "" }
+        let now = Date()
+        let timeDiff = firstDate.getTime.timeIntervalSince(now)
+        let hour = Int(timeDiff / 3600)
+        let minute = Int(timeDiff) % Int(3600) / 60
+        return "\(hour)시간 \(minute)분"
+    }
+    
+    // 알람 활성화 여부
+    var isActiveAlarm: Bool {
+        alarmList.first(where: {$0.isActive }) != nil
+    }
+    
     init(dataManager: CoreDataManager = .shared) {
         self.dataManager = dataManager
     }
@@ -63,7 +78,7 @@ class MainViewModel: ObservableObject {
                 isActive: alarm.isActive,
                 repeatDay: alarm.repeatDay.compactMap { Weekday(rawValue: $0) }
             )
-        }
+        }.sorted { $0.time.getTime < $1.time.getTime }
     }
     
     func updateAlarm(_ alarm: AlarmEntity) {
@@ -76,7 +91,7 @@ class MainViewModel: ObservableObject {
         }
         
         do {
-            try dataManager.updateAlarm(alarm: alarm)            
+            try dataManager.updateAlarm(alarm: alarm)
         } catch {
             
         }
@@ -90,7 +105,7 @@ class MainViewModel: ObservableObject {
         
         dataManager.deleteAlarm(alarm: alarm)
         Task {
-           await self.fetchAlarm()
+            await self.fetchAlarm()
         }
     }
 }
