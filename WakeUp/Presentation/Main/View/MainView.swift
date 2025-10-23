@@ -23,11 +23,11 @@ struct MainView: View {
             }
             
             LazyVStack(spacing: 14) {
-                ForEach(viewModel.alarmList.indices, id: \.self) { idx in
+                ForEach(Array(viewModel.alarmList.enumerated()), id: \.self.element.id) { (index, alarmEntity) in
                     HStack {
                         if viewModel.deleteMode {
                             Button {
-                                viewModel.deleteAlarm(viewModel.alarmList[idx])
+                                viewModel.deleteAlarm(alarmEntity)
                             } label: {
                                 Text("삭제")
                                     .foregroundStyle(.red)
@@ -37,22 +37,29 @@ struct MainView: View {
                         // alarmList가 바뀔떄까지 업데이트 안됨
                         AlarmView(alarm: Binding(get: {
                             // 삭제시 인덱스 오류 방지
-                            if idx > viewModel.alarmList.count-1 {
+                            if index > viewModel.alarmList.count-1 {
                                 return AlarmEntity(id: "", title: "", time: .now, notiRequests: [], isActive: false, repeatDay: [])
                             } else {
-                                return viewModel.alarmList[idx]
+                                return alarmEntity
                             }
                         }, set: {
-                            viewModel.alarmList[idx] = $0
+                            viewModel.alarmList[index] = $0
                             viewModel.updateAlarm($0)
                         }))
                         .onTapGesture {
-                            viewModel.showAlarmSettingView(alarm: viewModel.alarmList[idx])
+                            viewModel.showAlarmSettingView(alarm: alarmEntity)
                         }
                     }
                 }
             }
+            .animation(.default, value: viewModel.isActiveAlarm)
             .padding(16)
+        }
+        .animation(.default, value: viewModel.alarmList.count)
+        .onTapGesture {
+            withAnimation {
+                viewModel.deleteMode = false
+            }
         }
         .navigationBarItems(trailing: menuButton)
         .navigationBarItems(leading: completeButton)
@@ -92,6 +99,10 @@ struct MainView: View {
             await viewModel.requestPermission()
             await viewModel.fetchAlarm()
         }
+    }
+    
+    func removeRows(at offsets: IndexSet) {
+        viewModel.alarmList.remove(atOffsets: offsets)
     }
     
     private var menuButton: some View {
