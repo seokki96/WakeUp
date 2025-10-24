@@ -98,7 +98,7 @@ struct AlarmSettingView: View {
                 case .sound:
                     SoundView()
                 case .mission:
-                    MissionView()
+                    MissionSelecteView()
                 }
             }
         }
